@@ -1,0 +1,21 @@
+{ "name" : "sequester"
+, "version" : "0.0.0"
+, "description" : "A read/write lock for evented operations"
+, "url" : "http://bigeasy.github.com/sequester"
+, "keywords" : ["concurrency", "lock", "mutex", "transaction", "database", "evented"]
+, "author" : "Alan Gutierrez <alan@prettyrobots.com>"
+, "contributors" : []
+, "dependencies": {}
+, "devDependencies": { "proof": "0.0.32" }
+, "scripts" : { "test": "proof platform win32 && proof test */*/*.t.js || t/test" }
+, "engines" : { "node": "> 0.8.0" }
+, "homepage": "https://github.com/bigeasy/sequester"
+, "licenses": [
+  { "type": "MIT"
+  , "url": "http://github.com/bigeasy/sequester/raw/master/LICENSE"
+  }]
+, "repository":
+  { "type": "git"
+  , "url": "http://github.com/bigeasy/sequester.git"
+  }
+}
