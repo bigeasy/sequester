@@ -2,6 +2,12 @@ function Sequester () {
     this._queue = [[]]
 }
 
+Sequester.prototype.share = function (callback) {
+    var queue = this._queue
+    queue[queue.length - 1].push(callback)
+    if (queue.length == 1) callback()
+}
+
 Sequester.prototype.exclude = function (callback) {
     var queue = this._queue
     queue.push([ callback ])
@@ -18,12 +24,6 @@ Sequester.prototype.unlock = function (page) {
         queue.shift()
         queue[0].forEach(function (callback) { callback() })
     }
-}
-
-Sequester.prototype.share = function (callback) {
-    var queue = this._queue
-    queue[queue.length - 1].push(callback)
-    if (queue.length == 1) callback()
 }
 
 module.exports = Sequester
