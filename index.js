@@ -22,7 +22,9 @@ Sequester.prototype.unlock = function (page) {
     queue[0].shift()
     while (queue[0].length == 0 && queue.length != 1) {
         queue.shift()
-        queue[0].forEach(function (callback) { callback() })
+        queue[0].slice().forEach(function (callback) {
+            callback()
+        })
     }
 }
 
