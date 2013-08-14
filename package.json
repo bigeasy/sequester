@@ -1,21 +1,35 @@
-{ "name" : "sequester"
-, "version" : "0.0.1"
-, "description" : "A read/write lock for evented operations"
-, "url" : "http://bigeasy.github.com/sequester"
-, "keywords" : ["concurrency", "lock", "mutex", "transaction", "database", "evented"]
-, "author" : "Alan Gutierrez <alan@prettyrobots.com>"
-, "contributors" : []
-, "dependencies": {}
-, "devDependencies": { "proof": "0.0.33", "uglify-js": "~1.3" }
-, "scripts" : { "test": "proof platform win32 && proof test */*/*.t.js || t/test" }
-, "engines" : { "node": "> 0.8.0" }
-, "homepage": "https://github.com/bigeasy/sequester"
-, "licenses": [
-  { "type": "MIT"
-  , "url": "http://github.com/bigeasy/sequester/raw/master/LICENSE"
-  }]
-, "repository":
-  { "type": "git"
-  , "url": "http://github.com/bigeasy/sequester.git"
-  }
+{
+    "name" :            "sequester",
+    "version" :         "0.0.1",
+    "author" :          "Alan Gutierrez <alan@prettyrobots.com>",
+    "description":      "A read/write lock for evented operations",
+    "homepage":         "https://github.com/bigeasy/sequester",
+    "url":              "http://bigeasy.github.com/sequester",
+    "keywords":
+    [
+                        "concurrency", "lock", "mutex", "transaction", "database", "evented"
+    ],
+    "contributors":
+    [],
+    "dependencies":
+    {},
+    "devDependencies":
+    {
+                        "proof": "0.0.33",
+                        "uglify-js": "~1.3"
+    },
+    "licenses":
+    [{
+                        "type": "MIT",
+                        "url": "http://github.com/bigeasy/sequester/raw/master/LICENSE"
+    }],
+    "repository":
+    {
+                        "type": "git",
+                        "url": "http://github.com/bigeasy/sequester.git"
+    },
+    "scripts":
+    {
+        "test": "proof platform win32 && proof test */*/*.t.js || t/test"
+    }
 }
