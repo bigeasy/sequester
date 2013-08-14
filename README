@@ -1,4 +1,4 @@
-Squester
+Sequester
 
 A read/write lock for evented operations.
 
@@ -10,6 +10,6 @@ A read/write lock for evented operations.
 
     License:        MIT
 
-To learn everything you want to know about Edify start here:
+To learn everything you want to know about Sequester start here:
 
     http://bigeasy.github.io/sequester
