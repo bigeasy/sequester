@@ -10,7 +10,10 @@
                         "concurrency", "lock", "mutex", "transaction", "database", "evented"
     ],
     "contributors":
-    [],
+    [{
+                        "name": "Nicholas Kinsey",
+                        "email": "pyro@feisty.io"
+    }],
     "dependencies":
     {},
     "devDependencies":
