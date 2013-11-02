@@ -2,7 +2,7 @@ var __slice = [].slice
 
 function Sequester () {
     this._queue = [[]]
-    this._shared = []
+    this._shared = __slice.call(arguments)
 }
 
 Sequester.prototype.share = function (callback) {
