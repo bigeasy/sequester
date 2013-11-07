@@ -15,14 +15,19 @@ Sequester.prototype.exclude = function (callback) {
     var queue = this._queue
     queue.push([ callback ])
     queue.push([])
-    if (queue[0].length == 0) this.unlock()
+    if (queue[0].length == 0) this._unlock()
 }
 
 Sequester.prototype.unlock = function () {
-    var queue = this._queue
-    if (!(queue.length % 2)) {
+    if (!this._queue[0].length) throw new Error('unlock called with no lock held')
+    if (!(this._queue.length % 2)) {
         this._shared = __slice.call(arguments)
     }
+    this._unlock()
+}
+
+Sequester.prototype._unlock = function () {
+    var queue = this._queue
     queue[0].shift()
     while (queue[0].length == 0 && queue.length != 1) {
         queue.shift()
