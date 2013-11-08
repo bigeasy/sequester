@@ -20,8 +20,9 @@ Sequester.prototype.exclude = function (callback) {
 
 Sequester.prototype.increment = function (count) {
     if (!this._queue[0].length) throw new Error('increment called with no lock held')
-    if (count == null) count = 0
-    this._queue[0].push(function () {})
+    for (var i = count == null ? 1 : count; i; i--) {
+        this._queue[0].push(function () {})
+    }
 }
 
 Sequester.prototype.unlock = function () {

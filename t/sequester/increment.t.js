@@ -12,7 +12,7 @@ require('proof')(4, function (equal) {
             sequester.share(function () {
                 equal(order++, 4, 'second shared')
             })
-            sequester.increment()
+            sequester.increment(2)
         })
         sequester.increment()
     })
@@ -20,5 +20,6 @@ require('proof')(4, function (equal) {
     equal(order++, 1, 'first unlock')
     sequester.unlock()
     sequester.unlock()
-    equal(order++, 3, 'third unlock')
+    sequester.unlock()
+    equal(order++, 3, 'fourth unlock')
 })
