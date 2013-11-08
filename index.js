@@ -18,6 +18,12 @@ Sequester.prototype.exclude = function (callback) {
     if (queue[0].length == 0) this._unlock()
 }
 
+Sequester.prototype.increment = function (count) {
+    if (!this._queue[0].length) throw new Error('increment called with no lock held')
+    if (count == null) count = 0
+    this._queue[0].push(function () {})
+}
+
 Sequester.prototype.unlock = function () {
     if (!this._queue[0].length) throw new Error('unlock called with no lock held')
     if (!(this._queue.length % 2)) {
