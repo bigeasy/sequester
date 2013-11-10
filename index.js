@@ -82,6 +82,11 @@ Lock.prototype.increment = function (count) {
     lock.count += count == null ? 1 : count
 }
 
+Lock.prototype.__defineGetter__('count', function () {
+    var lock = this._queue._queue[0].locks[this._identifier]
+    return lock ? lock.count : 0
+})
+
 Lock.prototype.unlock = function () {
     this._validate()
 
