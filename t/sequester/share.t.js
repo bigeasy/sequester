@@ -1,10 +1,9 @@
 #!/usr/bin/env node
 
 require('proof')(4, function (equal) {
-    var Sequester = require('../..')
+    var sequester = require('../..').createLock()
 
     var order = 0
-    var sequester = new Sequester
     sequester.share(function () {
         equal(order++, 0, 'first shared')
     })

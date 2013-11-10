@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 
 require('proof')(1, function (deepEqual) {
-    var Sequester = require('../..')
+    var sequester = require('../..')
 
-    var sequester = new Sequester
+    var sequester = sequester.createLock()
     var order = []
 
+    sequester.share(function () {})
     sequester.exclude(function () {
-        sequester.share(function () {
+        sequester.downgrade(function () {
             order.push('downgraded')
             sequester.unlock()
         })
@@ -18,8 +19,10 @@ require('proof')(1, function (deepEqual) {
         sequester.unlock()
     })
     sequester.exclude(function () {
-        deepEqual(order, [ 'exclusive', 'downgraded', 'shared' ], 'downgrade')
+        order.push('exclusive again')
+        deepEqual(order, [ 'exclusive', 'shared', 'downgraded', 'exclusive again' ], 'downgrade')
         sequester.unlock()
     })
+    sequester.unlock()
     sequester.unlock()
 })

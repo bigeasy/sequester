@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 require('proof')(2, function (deepEqual) {
-    var Sequester = require('../..')
+    var sequester = require('../..')
 
     var order = []
     library(function (value) {
@@ -11,12 +11,10 @@ require('proof')(2, function (deepEqual) {
     })
 
     function library (callback) {
-        var sequester = new Sequester
-        sequester.exclude(function () {})
+        var lock = sequester.createLock()
+        lock.exclude(function () {})
         order.push('first')
-        sequester.share(function (value) {
-            callback(value)
-        })
-        sequester.unlock(1)
+        lock.share(function (value) { callback(value) })
+        lock.unlock(1)
     }
 })

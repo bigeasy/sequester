@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
 require('proof')(1, function (deepEqual) {
-    var Sequester = require('../..')
+    var sequester = require('../..')
 
-    var sequester = new Sequester
+    var sequester = sequester.createLock()
     var order = []
 
     sequester.exclude(function () {
