@@ -66,3 +66,41 @@ locker.exclude(lock, function () {
   this.increment(3)
 })
 ```
+
+*update*: I am suspect. It is the same pattern as in Magazine, but I don't like
+the lock object, or the memento that is returned. Instead, why not make the
+queue central to a Queue object and the Sequester object is an instance of a
+lock?
+
+```javascript
+var queue = sequester.createQueue()
+var lock = queue.createLock()
+
+lock.exclude(lock, function () {
+  lock.increment(3)
+})
+
+
+lock.unlock()
+ok(lock.count == 0)
+lock.dispose() // <- assert check that no locks are held, reuse internals.
+```
+
+Same API, but each instance of lock tracks it's own locks and releases so that a
+failed lock and release is slightly more isolated. Get to keep our single API.
+
+```javascript
+var lock = sequester.createLock()
+
+lock.exclude(lock, function () {
+  lock.increment(3)
+})
+
+
+lock.unlock()
+ok(lock.count == 0)
+lock.dispose() // <- assert check that no locks are held, reuse internals.
+```
+
+Note that we do not use reentrancy in either case, still use increment. If we
+call exclude while holding an exclusive lock we "deadlock".
