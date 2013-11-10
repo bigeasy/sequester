@@ -55,7 +55,7 @@ Lock.prototype.exclude = function (callback) {
     var queue = this._queue._queue
     var waiting = queue[0].count != 0
 
-    if (!waiting)  this._enqueue(function () {})
+    if (!waiting) this._enqueue()
     queue.push({ count: 0, locks: {}, identifier: this._identifier })
     this._enqueue(callback)
     queue.push({ count: 0, locks: {} })
