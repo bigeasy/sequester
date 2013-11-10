@@ -87,6 +87,15 @@ Lock.prototype.__defineGetter__('count', function () {
     return lock ? lock.count : 0
 })
 
+Lock.prototype.dispose = function () {
+    this._validate()
+
+    ok(this.count == 0, 'locks outstanding')
+
+    this._queue._identifiers.push(this._identifier)
+    delete this._identifier
+}
+
 Lock.prototype.unlock = function () {
     this._validate()
 
