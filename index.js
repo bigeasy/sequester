@@ -49,13 +49,6 @@ Lock.prototype.share = function (callback) {
     }
 }
 
-Lock.prototype.downgrade = function (callback) {
-    var queue = this._queue._queue
-    ok(!(queue.length % 2), 'current lock not exclusive')
-    ok(this._identifier == queue[0].identifier, 'exclusive lock not held by this lock')
-    this._enqueue(callback, 1)
-}
-
 Lock.prototype.exclude = function (callback) {
     this._validate()
 
@@ -67,6 +60,13 @@ Lock.prototype.exclude = function (callback) {
     this._enqueue(callback)
     queue.push({ count: 0, locks: {} })
     if (!waiting) this._unlock()
+}
+
+Lock.prototype.downgrade = function (callback) {
+    var queue = this._queue._queue
+    ok(!(queue.length % 2), 'current lock not exclusive')
+    ok(this._identifier == queue[0].identifier, 'exclusive lock not held by this lock')
+    this._enqueue(callback, 1)
 }
 
 Lock.prototype._get = function (operation) {
