@@ -4,22 +4,22 @@ require('proof')(4, function (equal) {
     var sequester = require('../..')
 
     var order = 0
-    var sequester = sequester.createLock()
-    sequester.share(function () {
+    var lock = sequester.createLock()
+    lock.share(function () {
         equal(order++, 0, 'first shared')
-        sequester.exclude(function () {
+        lock.exclude(function () {
             equal(order++, 2, 'exclusive')
-            sequester.share(function () {
+            lock.share(function () {
                 equal(order++, 4, 'second shared')
             })
-            sequester.increment(2)
+            lock.increment(2)
         })
-        sequester.increment()
+        lock.increment()
     })
-    sequester.unlock()
+    lock.unlock()
     equal(order++, 1, 'first unlock')
-    sequester.unlock()
-    sequester.unlock()
-    sequester.unlock()
+    lock.unlock()
+    lock.unlock()
+    lock.unlock()
     equal(order++, 3, 'fourth unlock')
 })

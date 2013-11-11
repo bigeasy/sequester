@@ -3,23 +3,23 @@
 require('proof')(1, function (deepEqual) {
     var sequester = require('../..')
 
-    var sequester = sequester.createLock()
+    var lock = sequester.createLock()
     var order = []
 
-    sequester.exclude(function () {
+    lock.exclude(function () {
         order.push('first')
     })
-    sequester.exclude(function () {
+    lock.exclude(function () {
         order.push('second')
-        sequester.unlock()
+        lock.unlock()
     })
-    sequester.exclude(function () {
+    lock.exclude(function () {
         order.push('third')
-        sequester.unlock()
+        lock.unlock()
     })
-    sequester.exclude(function () {
+    lock.exclude(function () {
         deepEqual(order, [ 'first', 'second', 'third' ], 'mutex')
     })
 
-    sequester.unlock()
+    lock.unlock()
 })

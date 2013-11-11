@@ -3,14 +3,14 @@
 require('proof')(2, function (equal) {
     var sequester = require('../..')
 
-    var sequester = sequester.createLock()
+    var lock = sequester.createLock()
     try {
-        sequester.unlock()
+        lock.unlock()
     } catch (e) {
         equal(e.message, 'unlock called with no lock held', 'lock not held on unlock')
     }
     try {
-        sequester.increment()
+        lock.increment()
     } catch (e) {
         equal(e.message, 'increment called with no lock held', 'lock not held on increment')
     }

@@ -3,26 +3,26 @@
 require('proof')(1, function (deepEqual) {
     var sequester = require('../..')
 
-    var sequester = sequester.createLock()
+    var lock = sequester.createLock()
     var order = []
 
-    sequester.share(function () {})
-    sequester.exclude(function () {
-        sequester.downgrade(function () {
+    lock.share(function () {})
+    lock.exclude(function () {
+        lock.downgrade(function () {
             order.push('downgraded')
-            sequester.unlock()
+            lock.unlock()
         })
         order.push('exclusive')
     })
-    sequester.share(function () {
+    lock.share(function () {
         order.push('shared')
-        sequester.unlock()
+        lock.unlock()
     })
-    sequester.exclude(function () {
+    lock.exclude(function () {
         order.push('exclusive again')
         deepEqual(order, [ 'exclusive', 'shared', 'downgraded', 'exclusive again' ], 'downgrade')
-        sequester.unlock()
+        lock.unlock()
     })
-    sequester.unlock()
-    sequester.unlock()
+    lock.unlock()
+    lock.unlock()
 })
