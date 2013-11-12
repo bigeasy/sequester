@@ -117,9 +117,6 @@ Lock.prototype._unlock = function () {
 
     while (queue[0].count == 0 && queue.length != 1) {
         queue.shift()
-        if (queue.length % 2) {
-            this._queue._excluder = queue[0].locks
-        }
         for (var identifier in queue[0].locks) {
             queue[0].locks[identifier].callbacks.forEach(function (callback) {
                 callback.apply(null, this._queue._shared)
