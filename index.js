@@ -136,3 +136,4 @@ function createLock () {
 }
 
 exports.createLock = createLock
+exports.createQueue = createQueue
