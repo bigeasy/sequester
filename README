@@ -8,7 +8,7 @@ A read/write lock for evented operations.
 
     Install:        `npm install sequester`
 
-    License:        MIT
+    License:        LGPL 3.0
 
 To learn everything you want to know about Sequester start here:
 
