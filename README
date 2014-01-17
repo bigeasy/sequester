@@ -2,6 +2,8 @@ Sequester
 
 A read/write lock for evented operations.
 
+    Discussion:     https://github.com/bigeasy/sequester/issues/1
+
     Documentation:  http://bigeasy.github.io/sequester
     Source:         http://github.io/bigeasy/sequester
     Issues:         http://github.com/bigeasy/sequester/issues
