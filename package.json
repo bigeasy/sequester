@@ -4,7 +4,6 @@
     "author" :          "Alan Gutierrez <alan@prettyrobots.com>",
     "description":      "A read/write lock for evented operations",
     "homepage":         "https://github.com/bigeasy/sequester",
-    "url":              "http://bigeasy.github.com/sequester",
     "keywords":
     [
                         "concurrency", "lock", "mutex", "transaction", "database", "evented"
