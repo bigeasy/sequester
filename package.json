@@ -13,6 +13,7 @@
                         "name": "Nicholas Kinsey",
                         "email": "pyro@feisty.io"
     }],
+    "main":             "sequester.js",
     "dependencies":
     {},
     "devDependencies":
