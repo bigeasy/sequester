@@ -106,6 +106,8 @@ Lock.prototype.unlock = function () {
     this._unlock()
 }
 
+// todo: shouldn't this set immediate in order to create a boundary?
+//       wouldn't be too expensive, if we did it before we looped.
 Lock.prototype._unlock = function () {
     var queue = this._queue._queue
     var lock = queue[0].locks[this._identifier]
