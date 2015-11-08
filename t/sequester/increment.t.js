@@ -1,25 +1,27 @@
 #!/usr/bin/env node
 
-require('proof')(4, function (equal) {
+require('proof')(4, prove)
+
+function prove (assert) {
     var sequester = require('../..')
 
     var order = 0
     var lock = sequester.createLock()
     lock.share(function () {
-        equal(order++, 0, 'first shared')
+        assert(order++, 0, 'first shared')
         lock.exclude(function () {
-            equal(order++, 2, 'exclusive')
+            assert(order++, 2, 'exclusive')
             lock.share(function () {
-                equal(order++, 4, 'second shared')
+                assert(order++, 4, 'second shared')
             })
             lock.increment(2)
         })
         lock.increment()
     })
     lock.unlock()
-    equal(order++, 1, 'first unlock')
+    assert(order++, 1, 'first unlock')
     lock.unlock()
     lock.unlock()
     lock.unlock()
-    equal(order++, 3, 'fourth unlock')
-})
+    assert(order++, 3, 'fourth unlock')
+}

@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
-require('proof')(1, function (deepEqual) {
+require('proof')(1, prove)
+
+function prove (assert) {
     var sequester = require('../..')
 
     var lock = sequester.createLock()
@@ -20,9 +22,9 @@ require('proof')(1, function (deepEqual) {
     })
     lock.exclude(function () {
         order.push('exclusive again')
-        deepEqual(order, [ 'exclusive', 'shared', 'downgraded', 'exclusive again' ], 'downgrade')
+        assert(order, [ 'exclusive', 'shared', 'downgraded', 'exclusive again' ], 'downgrade')
         lock.unlock()
     })
     lock.unlock()
     lock.unlock()
-})
+}

@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
-require('proof')(1, function (equal) {
+require('proof')(1, prove)
+
+function prove (assert) {
     var sequester = require('../..')
 
     var order = 0
@@ -8,8 +10,8 @@ require('proof')(1, function (equal) {
     lock.exclude(function () {
         lock.share(function () {
         })
-        equal(order++, 0, 'exclusive')
+        assert(order++, 0, 'exclusive')
         lock.unlock()
         lock.unlock()
     })
-})
+}

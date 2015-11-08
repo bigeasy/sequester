@@ -1,12 +1,14 @@
 #!/usr/bin/env node
 
-require('proof')(1, function (deepEqual) {
+require('proof')(1, prove)
+
+function prove (assert) {
     var sequester = require('../..')
 
     var order = []
     library(function () {
         order.push('second')
-        deepEqual(order, [ 'first', 'second' ], 'countdown')
+        assert(order, [ 'first', 'second' ], 'countdown')
     })
 
     function library (callback) {
@@ -24,4 +26,4 @@ require('proof')(1, function (deepEqual) {
             lock.unlock()
         }
     }
-})
+}
