@@ -104,3 +104,17 @@ lock.dispose() // <- assert check that no locks are held, reuse internals.
 
 Note that we do not use reentrancy in either case, still use increment. If we
 call exclude while holding an exclusive lock we "deadlock".
+
+
+## Error-First Callbacks
+
+Brainstorm: Instead of `unlock()` you can just give out `callback` and
+everything is an error first callback!!
+
+Brainstorm! Krissh-kiabow!
+
+Okay, but...
+
+You're using this orthognially. You don't want to start from a new queue, you
+just want to wait your **cadence**. This is perfect citizen of the Cadence
+universe and designed very well without knowing what was coming.

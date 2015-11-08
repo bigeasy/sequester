@@ -2,15 +2,89 @@ Sequester
 
 A read/write lock for evented operations.
 
-### Read/Write Locks
+### Shared/Exclusive Locks
+
+Sequester implements a write preferenced read/write lock. Writers get preference
+over readers.
+
+Seqeuster doesn't actually lock anything. It creates a queue of work, allowing
+shared work to proceed in parallel, but exclusive work is performed alone, with
+no other shared or exclusive work in progress. Rather than holding a lock
+object, you provide a callback to be called either shared, in parallel with
+other queued that can be also shared, or exclusive, run alone with no other
+queued functions.
+
+To obtain an exclusive lock you call `exclude` with a function to call when the
+exclusive lock is held. When your exclusive access work is done, you will call
+`unlock()` to release the exclusive lock.
+
+To obtain an shared lock you call `share` with a function to call when the
+shared lock is held. When your shared access work is done, you will call
+`unlock()` to release the shared lock.
+
+You call `unlock()` to release both exclusive and shared locks. You must be
+careful that a single call to `unlock()` matches a call single call to either
+`share()` or `exclude()`. There are no checks for mismatched unlocks.
+
+The queue is formed by created an array of arrays of funtions. They arrays of
+arrays alternate fro shared to exclusive and back. The queue always has at least
+one array of arrays. If it has only one array of arrays, that is an array of
+shared functions. If you call `shared()` when there are only shared functions or
+no functions in the queue, the function runs immediately.
+
+Otherwise the function is added to the array of arrays at the end of the queue.
+The last element of the queue is always an array of shared functions, which is
+why an empty queue is would have a single array of array of shared functions
+with no functions in it.
+
+If you call `exclude()`, two new new array of arrays are added to the queue. A
+single array of arrays that contains the exclusive function, then a new array of
+arrays for shared functions. Now as the arrays of functions before this entry
+complete, the array of arrays is shifted. The work in each array of functions is
+performed in parallel and all the functions must complete, with an unlock,
+before the next...
 
 ```
-
 var lock = sequester.createLock()
 
-lock.share(function () {
+var order = []
+lock.exclude(function () {
+    order.push('exclude one')
 })
 
+lock.share(function () {
+    order.push('share one')
+    lock.unlock()
+})
+
+lock.share(function () {
+    order.push('share two')
+    lock.unlock()
+})
+
+lock.exclude(function () {
+    order.push('exclude one')
+    lock.unlock()
+})
+
+lock.share(function () {
+    order.push('share three')
+    lock.unlock()
+})
+
+lock.unlock()
+
+lock.share(function () {
+    order.push('share four')
+})
+
+lock.exclude(function () {
+    order.push('exclude two')
+    console.log(order)
+    lock.unlock()
+})
+
+lock.unlock()
 ```
 
 ### Mutexes
@@ -160,3 +234,8 @@ Release the lock.
 #### `lock.downgrade()`
 
 Downgrade a lock from exclusive to shared.
+
+
+## Drafts
+
+Notes tos elf,
