@@ -6,7 +6,8 @@
     "homepage":         "https://github.com/bigeasy/sequester",
     "keywords":
     [
-                        "concurrency", "lock", "mutex", "transaction", "database", "evented"
+                        "concurrency", "lock", "mutex", "transaction",
+                        "database", "evented", "cadence"
     ],
     "contributors":
     [{
