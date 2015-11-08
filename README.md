@@ -2,7 +2,53 @@ Sequester
 
 A read/write lock for evented operations.
 
+### Read/Write Locks
+
+```
+
+var lock = sequester.createLock()
+
+lock.share(function () {
+})
+
+```
+
+### Mutexes
+
+We can create a simple mutex. *TK*
+
 ### Latches
+
+A latch is used to prevent people from using a new resource until it is ready
+for use. To create a latch you create a lock and obtain an exclusive lock. You
+can then hand out that lock and people can wait on it with a shared lock.
+
+```
+// create a lock
+var lock = sequester.createLock()
+var resource
+
+// acquire a shared lock
+lock.exclude(function () {})
+
+// now we can give that lock to people who need to wait, any share added here is
+// going to wait until we unlock once.
+lock.share(function () {
+    console.log('done waiting, resource is: ' + resource)
+})
+lock.share(function () {
+    console.log('I\'m done waiting too: ' + resource)
+})
+
+// initialize our resource.
+resource = 1
+
+// we can signal that resources are ready by calling unlock.
+lock.unlock()
+```
+
+When used for latches, we don't worry about unlocking other than the initial
+unlock.
 
 ### Countdown Locks
 
