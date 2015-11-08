@@ -118,3 +118,6 @@ Okay, but...
 You're using this orthognially. You don't want to start from a new queue, you
 just want to wait your **cadence**. This is perfect citizen of the Cadence
 universe and designed very well without knowing what was coming.
+
+We don't want our waiting to get in the way of what we want to return to the
+caller. Sequester throws mutex waits into an asynchronous stack.

@@ -45,6 +45,31 @@ performed in parallel and all the functions must complete, with an unlock,
 before the next...
 
 ```
+function Service () {
+    this._lock = sequester.createLock()
+}
+
+Service.prototype.read = cadence(function (async) {
+    async(function () {
+        this._lock.share(async())
+    }, [function () {
+        this._lock.unlock()
+    }], function () {
+        fs.readFile('values.json', 'utf8', async())
+    }, function (body) {
+        return [ JSON.stringify(body) ]
+    })
+})
+
+Service.prototype.write = cadence(function (async, values) {
+    async(function () {
+        this._lock.share(async())
+    }, [function () {
+        this._lock.unlock()
+    }],function () {
+        fs.writeFile('values.json', JSON.stringify(values), 'utf8', async())
+    })
+})
 var lock = sequester.createLock()
 
 var order = []
@@ -234,8 +259,3 @@ Release the lock.
 #### `lock.downgrade()`
 
 Downgrade a lock from exclusive to shared.
-
-
-## Drafts
-
-Notes tos elf,
