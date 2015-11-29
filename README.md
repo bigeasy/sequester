@@ -70,6 +70,11 @@ Service.prototype.write = cadence(function (async, values) {
         fs.writeFile('values.json', JSON.stringify(values), 'utf8', async())
     })
 })
+```
+
+*Ed: Below is a long example of read/write.*
+
+```
 var lock = sequester.createLock()
 
 var order = []
