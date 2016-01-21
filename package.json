@@ -1,6 +1,6 @@
 {
     "name":             "sequester",
-    "version":          "0.0.11",
+    "version":          "1.0.0",
     "author":           "Alan Gutierrez <alan@prettyrobots.com>",
     "description":      "A read/write lock for evented operations.",
     "homepage":         "https://github.com/bigeasy/sequester",
