@@ -1,7 +1,7 @@
 require('proof')(4, prove)
 
 function prove (assert) {
-    var lock = require('../..').createLock()
+    var lock = require('..').createLock()
 
     var order = 0
     lock.share(function () {

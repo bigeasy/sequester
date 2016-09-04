@@ -1,7 +1,7 @@
 require('proof')(4, prove)
 
 function prove (assert) {
-    var sequester = require('../..')
+    var sequester = require('..')
 
     var lock = sequester.createLock(1)
 
