@@ -1,35 +1,39 @@
 {
-    "name":             "sequester",
-    "version":          "1.0.0",
-    "author":           "Alan Gutierrez <alan@prettyrobots.com>",
-    "description":      "A read/write lock for evented operations.",
-    "homepage":         "https://github.com/bigeasy/sequester",
+    "name":                 "sequester",
+    "version":              "1.0.0",
+    "description":
+
+      "A read/write lock for evented operations.",
+
     "keywords":
     [
-                        "concurrency", "lock", "mutex", "transaction",
-                        "database", "evented", "cadence"
+                            "concurrency", "lock", "mutex", "transaction",
+                            "database", "evented", "cadence"
     ],
+    "author":               "Alan Gutierrez <alan@prettyrobots.com>",
     "contributors":
     [{
-                        "name": "Nicholas Kinsey",
-                        "email": "pyro@feisty.io"
+                            "name":  "Nicholas Kinsey",
+                            "email": "pyro@feisty.io"
     }],
-    "main":             "sequester.js",
-    "dependencies":
-    {},
-    "devDependencies":
-    {
-                        "proof": "1.x",
-                        "uglify-js": "~1.3"
-    },
-    "license":          "MIT",
+    "homepage":             "https://github.com/bigeasy/sequester",
+    "license":              "MIT",
     "repository":
     {
-                        "type": "git",
-                        "url": "http://github.com/bigeasy/sequester.git"
+                            "type": "git",
+                            "url": "http://github.com/bigeasy/sequester.git"
     },
+    "dependencies":
+    {
+    },
+    "devDependencies":
+    {
+                            "proof":                        "1.1.x",
+                            "uglify-js":                    "~1.3"
+    },
+    "main":                 "sequester.js",
     "scripts":
     {
-        "test": "proof platform win32 && proof test */*/*.t.js || t/test"
+                            "test": "proof platform win32 && proof test */*/*.t.js || t/test"
     }
 }
