@@ -29,7 +29,7 @@
     "devDependencies":
     {
                             "proof":                        "1.1.x",
-                            "uglify-js":                    "~1.3"
+                            "uglify-js":                    "1.3.x"
     },
     "main":                 "sequester.js",
     "scripts":
