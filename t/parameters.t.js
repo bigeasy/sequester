@@ -1,4 +1,4 @@
-require('proof/redux')(4, prove)
+require('proof')(4, prove)
 
 function prove (assert) {
     var sequester = require('..')
