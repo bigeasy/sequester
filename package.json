@@ -7,8 +7,8 @@
 
     "keywords":
     [
-                            "concurrency", "lock", "mutex", "transaction",
-                            "database", "evented", "cadence"
+                            "cadence", "concurrency", "lock", "mutex",
+                            "transaction", "database", "evented", "cadence"
     ],
     "author":               "Alan Gutierrez <alan@prettyrobots.com>",
     "contributors":
