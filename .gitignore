@@ -1,3 +1,5 @@
 /node_modules
 /.proof.out
 /coverage
+/.wiseguy
+/docs
