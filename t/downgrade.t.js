@@ -1,6 +1,6 @@
 require('proof')(1, prove)
 
-function prove (assert) {
+function prove (okay) {
     var sequester = require('..')
 
     var lock = sequester.createLock()
@@ -20,7 +20,7 @@ function prove (assert) {
     })
     lock.exclude(function () {
         order.push('exclusive again')
-        assert(order, [ 'exclusive', 'shared', 'downgraded', 'exclusive again' ], 'downgrade')
+        okay(order, [ 'exclusive', 'shared', 'downgraded', 'exclusive again' ], 'downgrade')
         lock.unlock()
     })
     lock.unlock()

@@ -1,6 +1,6 @@
 require('proof')(2, prove)
 
-function prove (assert) {
+function prove (okay) {
     var sequester = require('..')
 
     var lock = sequester.createLock()
@@ -10,14 +10,14 @@ function prove (assert) {
         try {
             lock.dispose()
         } catch (e) {
-            assert(e.message, 'locks outstanding', 'dispose with locks outstanding')
+            okay(e.message, 'locks outstanding', 'dispose with locks outstanding')
         }
         lock.unlock()
         lock.dispose()
         try {
             lock.share(function () {})
         } catch (e) {
-            assert(e.message, 'attempt to use disposed lock', 'use disposed lock')
+            okay(e.message, 'attempt to use disposed lock', 'use disposed lock')
         }
     })
 }

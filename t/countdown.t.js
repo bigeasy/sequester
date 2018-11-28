@@ -1,12 +1,12 @@
 require('proof')(1, prove)
 
-function prove (assert) {
+function prove (okay) {
     var sequester = require('..')
 
     var order = []
     library(function () {
         order.push('second')
-        assert(order, [ 'first', 'second' ], 'countdown')
+        okay(order, [ 'first', 'second' ], 'countdown')
     })
 
     function library (callback) {

@@ -1,13 +1,13 @@
 require('proof')(2, prove)
 
-function prove (assert) {
+function prove (okay) {
     var sequester = require('..')
 
     var order = []
     library(function (value) {
         order.push('second')
-        assert(order, [ 'first', 'second' ], 'latch')
-        assert(value, 1, 'value')
+        okay(order, [ 'first', 'second' ], 'latch')
+        okay(value, 1, 'value')
     })
 
     function library (callback) {

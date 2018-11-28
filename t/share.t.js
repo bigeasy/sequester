@@ -1,21 +1,21 @@
 require('proof')(4, prove)
 
-function prove (assert) {
+function prove (okay) {
     var lock = require('..').createLock()
 
     var order = 0
     lock.share(function () {
-        assert(order++, 0, 'first shared')
+        okay(order++, 0, 'first shared')
     })
     lock.share(function () {
         lock.exclude(function () {
-            assert(order++, 2, 'exclusive')
+            okay(order++, 2, 'exclusive')
         })
-        assert(order++, 1, 'second shared')
+        okay(order++, 1, 'second shared')
         lock.unlock()
         lock.unlock()
         lock.share(function () {
-            assert(order++, 3, 'third shared')
+            okay(order++, 3, 'third shared')
         })
         lock.unlock()
     })

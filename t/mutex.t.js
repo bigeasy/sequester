@@ -1,6 +1,6 @@
 require('proof')(1, prove)
 
-function prove (assert) {
+function prove (okay) {
     var sequester = require('..')
 
     var lock = sequester.createLock()
@@ -18,7 +18,7 @@ function prove (assert) {
         lock.unlock()
     })
     lock.exclude(function () {
-        assert(order, [ 'first', 'second', 'third' ], 'mutex')
+        okay(order, [ 'first', 'second', 'third' ], 'mutex')
     })
 
     lock.unlock()
