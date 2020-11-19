@@ -33,6 +33,6 @@
     "main":                 "sequester.js",
     "scripts":
     {
-                            "test": "proof test test/*.t.js"
+                            "test": "proof test/*.t.js"
     }
 }
