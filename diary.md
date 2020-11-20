@@ -1,3 +1,31 @@
+## Thu Nov 19 19:48:17 CST 2020
+
+Tried to make an upgradable shared mutex but it got complicated. A basic
+implementation would mark a shared entry as upgradable. If upgrade is called you
+assign a `Promise` `resolve` method to `upgrade` and return the promise. When
+you unlock and reach zero you check to see if there is a resolve and unshift an
+exclusive lock onto the queue, reassign the Promise of the first shared.
+
+You also unset the upgradable flag if you hit zero.
+
+However, if you do not reach zero, if the same come path comes back it's going
+to extend the queue. This is going to reduce throughput somewhat. If you have
+more than one upgradable queued, then you've pretty much got the same perfrmance
+as exclusive unless you want scan backwards through the queue to see if the
+shared mutexes are before the last are upgradable and select the one furthest
+from the end.
+
+Ah, no. You starve the one waiting for upgradable.
+
+Anyway, I'll have to write something with Sequester first and see if there are
+any glaring opportunities for an upgradable lock. Seems like I'm always going to
+know when something requires and exclusive write since I generally set things up
+synchronously.
+
+## Thu Nov 19 19:48:06 CST 2020
+
+Older.
+
 # Sequester Design Diary
 
 ## Different Lock Recipes
