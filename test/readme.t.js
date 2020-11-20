@@ -1,5 +1,5 @@
 require('proof')(29, async okay => {
-    const Sequester = require('../redux')
+    const Sequester = require('..')
 
     //
     const sequester = new Sequester

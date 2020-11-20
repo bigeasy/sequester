@@ -1,141 +1,102 @@
-var __slice = [].slice
+// Internally, Sequester keeps a queue of lock requests in an array. The lock
+// requests always alternate shared, exclusive, shared, etc. The last element of
+// the lock queue array is always a shared lock. There is always at least one
+// element in the lock queue array. Therefore, when there is only one element in
+// the lock queue array it is a shared lock.
 
-function ok (condition, message) {
-    if (!condition) throw new Error(message)
-}
+// The shared lock has a counter. A shared lock can be held by many. An
+// exclusive lock can only be held by one. An exclusive lock does not have a
+// counter.
 
-function Queue () {
-    this._identifiers = []
-    this._nextIdentifier = 1
-    this._queue = [{ count: 0, locks: {} }]
-}
+// The lock in the first element of the lock queue array is the active lock. Any
+// locks after the first element of the lock queue array are waiting locks.
 
+// When you request an exclusive lock an exclusive lock is pushed onto the lock
+// queue array followed by a shared lock so that the last element of the array
+// is always a shared lock. You receive a promise that will resolve when the
+// exclusive lock reaches the front of the array.
 
-Queue.prototype.createLock = function (callback) {
-    return new Lock(this, this._identifiers.pop() || this._nextIdentifier++)
-}
+// When you request a shared lock that request is always added by incrementing
+// the shared lock counter of the last element of the array. (The last element
+// of lock queue array is always a shared lock.) You will receive a promise that
+// will resolve when the shared lock reaches the front of the array.
 
-function Lock (queue, identifier) {
-    this._queue = queue
-    this._identifier = identifier
-}
+// This is how we implement a reader-preferenced read/write lock and ensure that
+// the lock makes progress. Exclusive locks are always pushed onto the array so
+// no exclusive lock will be added before it. Shared locks will always increment
+// the counter of the shared lock at the end of the array so the counters of all
+// the shared locks in front of an exclusive lock can only go down.
 
-Lock.prototype._validate = function () {
-    ok(this._identifier, 'attempt to use disposed lock')
-}
+// When a shared lock's count reaches zero, if there are locks after it in the
+// queue, the lock is shifted from the front of the lock queue array. The next
+// lock becomes the active lock. The next lock will be an exclusive lock
+// followed by the new shared tail.
 
-Lock.prototype._enqueue = function (callback, index) {
-    var queue = this._queue._queue
-    var entry = queue[index == null ? queue.length - 1 : index]
+// If the count reaches zero and there are no locks waiting, we just leave that
+// shared lock in the lock queue array as its single element. When there is no
+// contention &mdash; no waiting locks &mdash; Sequester is just a counter going
+// up and down. Practically a no-op.
 
-    var lock
-    if (!(lock = entry.locks[this._identifier])) {
-        entry.locks[this._identifier] = lock = { count: 0, callbacks: [] }
-        entry.count++
+//
+module.exports = class Sequester {
+    constructor () {
+        this._queue = [{ exclusive: false, count: 0, promise: null, resolve: null }]
     }
 
-    lock.count++
-    if (callback) lock.callbacks.push(callback)
-}
-
-Lock.prototype.share = function (callback) {
-    this._validate()
-
-    if (this._queue._queue.length > 1) {
-        this._enqueue(callback)
-    } else {
-        this._enqueue()
-        callback.apply(null, this._queue._shared)
-    }
-}
-
-Lock.prototype.exclude = function (callback) {
-    this._validate()
-
-    var queue = this._queue._queue
-    var waiting = queue[0].count != 0
-
-    if (!waiting) this._enqueue()
-    queue.push({ count: 0, locks: {}, identifier: this._identifier })
-    this._enqueue(callback)
-    queue.push({ count: 0, locks: {} })
-    if (!waiting) this._unlock()
-}
-
-Lock.prototype.downgrade = function (callback) {
-    var queue = this._queue._queue
-    ok(!(queue.length % 2), 'current lock not exclusive')
-    ok(this._identifier == queue[0].identifier, 'exclusive lock not held by this lock')
-    this._enqueue(callback, 1)
-}
-
-Lock.prototype._get = function (operation) {
-    var lock = this._queue._queue[0].locks[this._identifier]
-    ok(lock, operation + ' called with no lock held')
-    return lock
-}
-
-Lock.prototype.increment = function (count) {
-    this._validate()
-
-    var lock = this._get('increment')
-    lock.count += count == null ? 1 : count
-}
-
-Lock.prototype.__defineGetter__('count', function () {
-    var lock = this._queue._queue[0].locks[this._identifier]
-    return lock ? lock.count : 0
-})
-
-Lock.prototype.dispose = function () {
-    this._validate()
-
-    ok(this.count == 0, 'locks outstanding')
-
-    this._queue._identifiers.push(this._identifier)
-    delete this._identifier
-}
-
-Lock.prototype.unlock = function () {
-    this._validate()
-
-    var lock = this._get('unlock')
-    if (!(this._queue._queue.length % 2)) {
-        this._queue._shared = __slice.call(arguments)
-    }
-    this._unlock()
-}
-
-// todo: shouldn't this set immediate in order to create a boundary?
-//       wouldn't be too expensive, if we did it before we looped.
-Lock.prototype._unlock = function () {
-    var queue = this._queue._queue
-    var lock = queue[0].locks[this._identifier]
-
-    if (--lock.count == 0) {
-        delete queue[0].locks[this._identifier]
-        queue[0].count--
+    get mutexes () {
+        return this._queue.map(mutex => mutex.count)
     }
 
-    while (queue[0].count == 0 && queue.length != 1) {
-        queue.shift()
-        for (var identifier in queue[0].locks) {
-            queue[0].locks[identifier].callbacks.forEach(function (callback) {
-                callback.apply(null, this._queue._shared)
-            }, this)
+    get state () {
+        return this._queue[0].exclusive ? 'exclusive' : 'shared'
+    }
+
+    increment (count) {
+        this._queue[0].count += count
+    }
+
+    share () {
+        if (this._queue.length == 1) {
+            this._queue[0].count++
+            return null
+        }
+        const shared = this._queue[this._queue.length - 1]
+        shared.count++
+        return shared.promise
+    }
+
+    exclude () {
+        const exclusive = {
+            exclusive: true,
+            count: 1,
+            promise: this._queue.length == 1 && this._queue[0].count == 0
+                ? null
+                : new Promise(resolve => this._queue[this._queue.length - 1].resolve = resolve),
+            resolve: null
+        }
+        const shared = {
+            exclusive: false,
+            count: 0,
+            upgradable: false,
+            promise: new Promise(resolve => exclusive.resolve = resolve),
+            resolve: null
+        }
+        this._queue.push(exclusive, shared)
+        if (exclusive.promise == null) {
+            this._queue.shift()
+        }
+        return exclusive.promise
+    }
+
+    downgrade () {
+        this._queue[1].count++
+        this.unlock()
+    }
+
+    unlock () {
+        this._queue[0].count--
+        while (this._queue.length != 1 && this._queue[0].count == 0) {
+            this._queue.shift().resolve.call()
         }
     }
 }
-
-function createQueue () {
-    var queue = new Queue
-    queue._shared = __slice.call(arguments)
-    return queue
-}
-
-function createLock () {
-    return createQueue.apply(null, __slice.call(arguments)).createLock()
-}
-
-exports.createLock = createLock
-exports.createQueue = createQueue
