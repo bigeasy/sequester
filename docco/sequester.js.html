@@ -11,6 +11,29 @@
   <div id="container">
     <div id="background"></div>
 
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page_wrapper">
+            <div id="jump_page">
+
+
+                <a class="source" href="sequester.js.html">
+                  sequester.js
+                </a>
+
+
+                <a class="source" href="readme.t.js.html">
+                  readme.t.js
+                </a>
+
+            </div>
+          </div>
+        </li>
+      </ul>
+
     <ul class="sections">
 
           <li id="title">
@@ -27,118 +50,13 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
+              <p>Internally, Sequester keeps a queue of lock requests in an array. The lock
+requests always alternate shared, exclusive, shared, etc. The last element of
+the lock queue array is always a shared lock. There is always at least one
+element in the lock queue array. Therefore, when there is only one element in
+the lock queue array it is a shared lock.</p>
 
             </div>
-
-            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> __slice = [].slice
-
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ok</span> (<span class="hljs-params">condition, message</span>) </span>{
-    <span class="hljs-keyword">if</span> (!condition) <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(message)
-}
-
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Queue</span> (<span class="hljs-params"></span>) </span>{
-    <span class="hljs-keyword">this</span>._identifiers = []
-    <span class="hljs-keyword">this</span>._nextIdentifier = <span class="hljs-number">1</span>
-    <span class="hljs-keyword">this</span>._queue = [{ <span class="hljs-attr">count</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">locks</span>: {} }]
-}
-
-
-Queue.prototype.createLock = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">callback</span>) </span>{
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Lock(<span class="hljs-keyword">this</span>, <span class="hljs-keyword">this</span>._identifiers.pop() || <span class="hljs-keyword">this</span>._nextIdentifier++)
-}
-
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Lock</span> (<span class="hljs-params">queue, identifier</span>) </span>{
-    <span class="hljs-keyword">this</span>._queue = queue
-    <span class="hljs-keyword">this</span>._identifier = identifier
-}
-
-Lock.prototype._validate = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
-    ok(<span class="hljs-keyword">this</span>._identifier, <span class="hljs-string">'attempt to use disposed lock'</span>)
-}
-
-Lock.prototype._enqueue = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">callback, index</span>) </span>{
-    <span class="hljs-keyword">var</span> queue = <span class="hljs-keyword">this</span>._queue._queue
-    <span class="hljs-keyword">var</span> entry = queue[index == <span class="hljs-literal">null</span> ? queue.length - <span class="hljs-number">1</span> : index]
-
-    <span class="hljs-keyword">var</span> lock
-    <span class="hljs-keyword">if</span> (!(lock = entry.locks[<span class="hljs-keyword">this</span>._identifier])) {
-        entry.locks[<span class="hljs-keyword">this</span>._identifier] = lock = { <span class="hljs-attr">count</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">callbacks</span>: [] }
-        entry.count++
-    }
-
-    lock.count++
-    <span class="hljs-keyword">if</span> (callback) lock.callbacks.push(callback)
-}
-
-Lock.prototype.share = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">callback</span>) </span>{
-    <span class="hljs-keyword">this</span>._validate()
-
-    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>._queue._queue.length &gt; <span class="hljs-number">1</span>) {
-        <span class="hljs-keyword">this</span>._enqueue(callback)
-    } <span class="hljs-keyword">else</span> {
-        <span class="hljs-keyword">this</span>._enqueue()
-        callback.apply(<span class="hljs-literal">null</span>, <span class="hljs-keyword">this</span>._queue._shared)
-    }
-}
-
-Lock.prototype.exclude = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">callback</span>) </span>{
-    <span class="hljs-keyword">this</span>._validate()
-
-    <span class="hljs-keyword">var</span> queue = <span class="hljs-keyword">this</span>._queue._queue
-    <span class="hljs-keyword">var</span> waiting = queue[<span class="hljs-number">0</span>].count != <span class="hljs-number">0</span>
-
-    <span class="hljs-keyword">if</span> (!waiting) <span class="hljs-keyword">this</span>._enqueue()
-    queue.push({ <span class="hljs-attr">count</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">locks</span>: {}, <span class="hljs-attr">identifier</span>: <span class="hljs-keyword">this</span>._identifier })
-    <span class="hljs-keyword">this</span>._enqueue(callback)
-    queue.push({ <span class="hljs-attr">count</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">locks</span>: {} })
-    <span class="hljs-keyword">if</span> (!waiting) <span class="hljs-keyword">this</span>._unlock()
-}
-
-Lock.prototype.downgrade = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">callback</span>) </span>{
-    <span class="hljs-keyword">var</span> queue = <span class="hljs-keyword">this</span>._queue._queue
-    ok(!(queue.length % <span class="hljs-number">2</span>), <span class="hljs-string">'current lock not exclusive'</span>)
-    ok(<span class="hljs-keyword">this</span>._identifier == queue[<span class="hljs-number">0</span>].identifier, <span class="hljs-string">'exclusive lock not held by this lock'</span>)
-    <span class="hljs-keyword">this</span>._enqueue(callback, <span class="hljs-number">1</span>)
-}
-
-Lock.prototype._get = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">operation</span>) </span>{
-    <span class="hljs-keyword">var</span> lock = <span class="hljs-keyword">this</span>._queue._queue[<span class="hljs-number">0</span>].locks[<span class="hljs-keyword">this</span>._identifier]
-    ok(lock, operation + <span class="hljs-string">' called with no lock held'</span>)
-    <span class="hljs-keyword">return</span> lock
-}
-
-Lock.prototype.increment = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">count</span>) </span>{
-    <span class="hljs-keyword">this</span>._validate()
-
-    <span class="hljs-keyword">var</span> lock = <span class="hljs-keyword">this</span>._get(<span class="hljs-string">'increment'</span>)
-    lock.count += count == <span class="hljs-literal">null</span> ? <span class="hljs-number">1</span> : count
-}
-
-Lock.prototype.__defineGetter__(<span class="hljs-string">'count'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
-    <span class="hljs-keyword">var</span> lock = <span class="hljs-keyword">this</span>._queue._queue[<span class="hljs-number">0</span>].locks[<span class="hljs-keyword">this</span>._identifier]
-    <span class="hljs-keyword">return</span> lock ? lock.count : <span class="hljs-number">0</span>
-})
-
-Lock.prototype.dispose = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
-    <span class="hljs-keyword">this</span>._validate()
-
-    ok(<span class="hljs-keyword">this</span>.count == <span class="hljs-number">0</span>, <span class="hljs-string">'locks outstanding'</span>)
-
-    <span class="hljs-keyword">this</span>._queue._identifiers.push(<span class="hljs-keyword">this</span>._identifier)
-    <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>._identifier
-}
-
-Lock.prototype.unlock = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
-    <span class="hljs-keyword">this</span>._validate()
-
-    <span class="hljs-keyword">var</span> lock = <span class="hljs-keyword">this</span>._get(<span class="hljs-string">'unlock'</span>)
-    <span class="hljs-keyword">if</span> (!(<span class="hljs-keyword">this</span>._queue._queue.length % <span class="hljs-number">2</span>)) {
-        <span class="hljs-keyword">this</span>._queue._shared = __slice.call(<span class="hljs-built_in">arguments</span>)
-    }
-    <span class="hljs-keyword">this</span>._unlock()
-}
-
-</pre></div></div>
 
         </li>
 
@@ -149,44 +67,181 @@ Lock.prototype.unlock = <span class="hljs-function"><span class="hljs-keyword">f
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>todo: shouldn’t this set immediate in order to create a boundary?
-      wouldn’t be too expensive, if we did it before we looped.</p>
+              <p>The shared lock has a counter. A shared lock can be held by many. An
+exclusive lock can only be held by one. An exclusive lock does not have a
+counter.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>Lock.prototype._unlock = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
-    <span class="hljs-keyword">var</span> queue = <span class="hljs-keyword">this</span>._queue._queue
-    <span class="hljs-keyword">var</span> lock = queue[<span class="hljs-number">0</span>].locks[<span class="hljs-keyword">this</span>._identifier]
+        </li>
 
-    <span class="hljs-keyword">if</span> (--lock.count == <span class="hljs-number">0</span>) {
-        <span class="hljs-keyword">delete</span> queue[<span class="hljs-number">0</span>].locks[<span class="hljs-keyword">this</span>._identifier]
-        queue[<span class="hljs-number">0</span>].count--
+
+        <li id="section-3">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>The lock in the first element of the lock queue array is the active lock. Any
+locks after the first element of the lock queue array are waiting locks.</p>
+
+            </div>
+
+        </li>
+
+
+        <li id="section-4">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>When you request an exclusive lock an exclusive lock is pushed onto the lock
+queue array followed by a shared lock so that the last element of the array
+is always a shared lock. You receive a promise that will resolve when the
+exclusive lock reaches the front of the array.</p>
+
+            </div>
+
+        </li>
+
+
+        <li id="section-5">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>When you request a shared lock that request is always added by incrementing
+the shared lock counter of the last element of the array. (The last element
+of lock queue array is always a shared lock.) You will receive a promise that
+will resolve when the shared lock reaches the front of the array.</p>
+
+            </div>
+
+        </li>
+
+
+        <li id="section-6">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>This is how we implement a reader-preferenced read/write lock and ensure that
+the lock makes progress. Exclusive locks are always pushed onto the array so
+no exclusive lock will be added before it. Shared locks will always increment
+the counter of the shared lock at the end of the array so the counters of all
+the shared locks in front of an exclusive lock can only go down.</p>
+
+            </div>
+
+        </li>
+
+
+        <li id="section-7">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>When a shared lock’s count reaches zero, if there are locks after it in the
+queue, the lock is shifted from the front of the lock queue array. The next
+lock becomes the active lock. The next lock will be an exclusive lock
+followed by the new shared tail.</p>
+
+            </div>
+
+        </li>
+
+
+        <li id="section-8">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>If the count reaches zero and there are no locks waiting, we just leave that
+shared lock in the lock queue array as its single element. When there is no
+contention &mdash; no waiting locks &mdash; Sequester is just a counter going
+up and down. Practically a no-op.</p>
+
+            </div>
+
+        </li>
+
+
+        <li id="section-9">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+
+            </div>
+
+            <div class="content"><div class='highlight'><pre><span class="hljs-built_in">module</span>.exports = <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Sequester</span> </span>{
+    <span class="hljs-keyword">constructor</span> () {
+        <span class="hljs-keyword">this</span>._queue = [{ <span class="hljs-attr">exclusive</span>: <span class="hljs-literal">false</span>, <span class="hljs-attr">count</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">promise</span>: <span class="hljs-literal">null</span>, <span class="hljs-attr">resolve</span>: <span class="hljs-literal">null</span> }]
     }
 
-    <span class="hljs-keyword">while</span> (queue[<span class="hljs-number">0</span>].count == <span class="hljs-number">0</span> &amp;&amp; queue.length != <span class="hljs-number">1</span>) {
-        queue.shift()
-        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> identifier <span class="hljs-keyword">in</span> queue[<span class="hljs-number">0</span>].locks) {
-            queue[<span class="hljs-number">0</span>].locks[identifier].callbacks.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">callback</span>) </span>{
-                callback.apply(<span class="hljs-literal">null</span>, <span class="hljs-keyword">this</span>._queue._shared)
-            }, <span class="hljs-keyword">this</span>)
+    <span class="hljs-keyword">get</span> mutexes () {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._queue.map(<span class="hljs-function"><span class="hljs-params">mutex</span> =&gt;</span> mutex.count)
+    }
+
+    <span class="hljs-keyword">get</span> state () {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._queue[<span class="hljs-number">0</span>].exclusive ? <span class="hljs-string">'exclusive'</span> : <span class="hljs-string">'shared'</span>
+    }
+
+    increment (count) {
+        <span class="hljs-keyword">this</span>._queue[<span class="hljs-number">0</span>].count += count
+    }
+
+    share () {
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>._queue.length == <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">this</span>._queue[<span class="hljs-number">0</span>].count++
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>
+        }
+        <span class="hljs-keyword">const</span> shared = <span class="hljs-keyword">this</span>._queue[<span class="hljs-keyword">this</span>._queue.length - <span class="hljs-number">1</span>]
+        shared.count++
+        <span class="hljs-keyword">return</span> shared.promise
+    }
+
+    exclude () {
+        <span class="hljs-keyword">const</span> exclusive = {
+            <span class="hljs-attr">exclusive</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">count</span>: <span class="hljs-number">1</span>,
+            <span class="hljs-attr">promise</span>: <span class="hljs-keyword">this</span>._queue.length == <span class="hljs-number">1</span> &amp;&amp; <span class="hljs-keyword">this</span>._queue[<span class="hljs-number">0</span>].count == <span class="hljs-number">0</span>
+                ? <span class="hljs-literal">null</span>
+                : <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-params">resolve</span> =&gt;</span> <span class="hljs-keyword">this</span>._queue[<span class="hljs-keyword">this</span>._queue.length - <span class="hljs-number">1</span>].resolve = resolve),
+            <span class="hljs-attr">resolve</span>: <span class="hljs-literal">null</span>
+        }
+        <span class="hljs-keyword">const</span> shared = {
+            <span class="hljs-attr">exclusive</span>: <span class="hljs-literal">false</span>,
+            <span class="hljs-attr">count</span>: <span class="hljs-number">0</span>,
+            <span class="hljs-attr">upgradable</span>: <span class="hljs-literal">false</span>,
+            <span class="hljs-attr">promise</span>: <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-params">resolve</span> =&gt;</span> exclusive.resolve = resolve),
+            <span class="hljs-attr">resolve</span>: <span class="hljs-literal">null</span>
+        }
+        <span class="hljs-keyword">this</span>._queue.push(exclusive, shared)
+        <span class="hljs-keyword">if</span> (exclusive.promise == <span class="hljs-literal">null</span>) {
+            <span class="hljs-keyword">this</span>._queue.shift()
+        }
+        <span class="hljs-keyword">return</span> exclusive.promise
+    }
+
+    downgrade () {
+        <span class="hljs-keyword">this</span>._queue[<span class="hljs-number">1</span>].count++
+        <span class="hljs-keyword">this</span>.unlock()
+    }
+
+    unlock () {
+        <span class="hljs-keyword">this</span>._queue[<span class="hljs-number">0</span>].count--
+        <span class="hljs-keyword">while</span> (<span class="hljs-keyword">this</span>._queue.length != <span class="hljs-number">1</span> &amp;&amp; <span class="hljs-keyword">this</span>._queue[<span class="hljs-number">0</span>].count == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">this</span>._queue.shift().resolve.call()
         }
     }
-}
-
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createQueue</span> (<span class="hljs-params"></span>) </span>{
-    <span class="hljs-keyword">var</span> queue = <span class="hljs-keyword">new</span> Queue
-    queue._shared = __slice.call(<span class="hljs-built_in">arguments</span>)
-    <span class="hljs-keyword">return</span> queue
-}
-
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createLock</span> (<span class="hljs-params"></span>) </span>{
-    <span class="hljs-keyword">return</span> createQueue.apply(<span class="hljs-literal">null</span>, __slice.call(<span class="hljs-built_in">arguments</span>)).createLock()
-}
-
-exports.createLock = createLock
-exports.createQueue = createQueue
-
-</pre></div></div>
+}</pre></div></div>
 
         </li>
 
