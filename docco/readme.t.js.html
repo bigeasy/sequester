@@ -53,8 +53,8 @@
 
             </div>
 
-            <div class="content"><div class='highlight'><pre><span class="hljs-built_in">require</span>(<span class="hljs-string">'proof'</span>)(<span class="hljs-number">29</span>, <span class="hljs-keyword">async</span> okay =&gt; {
-    <span class="hljs-keyword">const</span> Sequester = <span class="hljs-built_in">require</span>(<span class="hljs-string">'..'</span>)</pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;proof&#x27;</span>)(<span class="hljs-number">29</span>, <span class="hljs-keyword">async</span> okay =&gt; {
+    <span class="hljs-keyword">const</span> Sequester = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;..&#x27;</span>)</pre></div></div>
 
         </li>
 
@@ -110,7 +110,7 @@ the count of locks for each mutex in the mutex queue array.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    okay(sequester.mutexes, [ <span class="hljs-number">0</span> ], <span class="hljs-string">'display of empty mutex queue'</span>)</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    okay(sequester.mutexes, [ <span class="hljs-number">0</span> ], <span class="hljs-string">&#x27;display of empty mutex queue&#x27;</span>)</pre></div></div>
 
         </li>
 
@@ -161,7 +161,7 @@ one mutex in the mutex queue array, it is a shared mutex.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>    okay(sequester.mutexes, [ <span class="hljs-number">0</span> ], <span class="hljs-string">'single shared mutex with no locks'</span>)</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    okay(sequester.mutexes, [ <span class="hljs-number">0</span> ], <span class="hljs-string">&#x27;single shared mutex with no locks&#x27;</span>)</pre></div></div>
 
         </li>
 
@@ -327,7 +327,7 @@ Sequester simply increments a counter.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>        okay(sequester.mutexes, [ <span class="hljs-number">1</span> ], <span class="hljs-string">'single shared lock'</span>)</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        okay(sequester.mutexes, [ <span class="hljs-number">1</span> ], <span class="hljs-string">&#x27;single shared lock&#x27;</span>)</pre></div></div>
 
         </li>
 
@@ -342,7 +342,7 @@ Sequester simply increments a counter.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>        guarded(<span class="hljs-string">'shared'</span>)</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        guarded(<span class="hljs-string">&#x27;shared&#x27;</span>)</pre></div></div>
 
         </li>
 
@@ -372,7 +372,7 @@ Sequester simply increments a counter.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>        okay(log.splice(<span class="hljs-number">0</span>), [ <span class="hljs-string">'shared 1'</span> ], <span class="hljs-string">'one shared action'</span>)
+            <div class="content"><div class='highlight'><pre>        okay(log.splice(<span class="hljs-number">0</span>), [ <span class="hljs-string">&#x27;shared 1&#x27;</span> ], <span class="hljs-string">&#x27;one shared action&#x27;</span>)
     }</pre></div></div>
 
         </li>
@@ -455,7 +455,7 @@ proceed to perform actions on your guarded code.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>        okay(sequester.mutexes, [ <span class="hljs-number">1</span>, <span class="hljs-number">0</span> ], <span class="hljs-string">'single exclusive lock, shared mutex with no locks waiting'</span>)</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        okay(sequester.mutexes, [ <span class="hljs-number">1</span>, <span class="hljs-number">0</span> ], <span class="hljs-string">&#x27;single exclusive lock, shared mutex with no locks waiting&#x27;</span>)</pre></div></div>
 
         </li>
 
@@ -470,7 +470,7 @@ proceed to perform actions on your guarded code.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>        guarded(<span class="hljs-string">'exclusive'</span>)</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        guarded(<span class="hljs-string">&#x27;exclusive&#x27;</span>)</pre></div></div>
 
         </li>
 
@@ -500,7 +500,7 @@ proceed to perform actions on your guarded code.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>        okay(sequester.mutexes, [ <span class="hljs-number">0</span> ], <span class="hljs-string">'single shared mutex with no locks'</span>)</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        okay(sequester.mutexes, [ <span class="hljs-number">0</span> ], <span class="hljs-string">&#x27;single shared mutex with no locks&#x27;</span>)</pre></div></div>
 
         </li>
 
@@ -515,7 +515,7 @@ proceed to perform actions on your guarded code.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre>        okay(log.splice(<span class="hljs-number">0</span>), [ <span class="hljs-string">'exclusive 1'</span> ], <span class="hljs-string">'one exclusive action'</span>)
+            <div class="content"><div class='highlight'><pre>        okay(log.splice(<span class="hljs-number">0</span>), [ <span class="hljs-string">&#x27;exclusive 1&#x27;</span> ], <span class="hljs-string">&#x27;one exclusive action&#x27;</span>)
     }</pre></div></div>
 
         </li>
@@ -560,11 +560,11 @@ in a <code>Promise</code> and enter the <code>PromiseJob</code> queue. Therefore
 
             <div class="content"><div class='highlight'><pre>    {
         <span class="hljs-keyword">await</span> sequester.exclude()
-        okay(sequester.mutexes, [ <span class="hljs-number">1</span>, <span class="hljs-number">0</span> ], <span class="hljs-string">'single exclusive lock, shared mutex with no locks waiting'</span>)
-        guarded(<span class="hljs-string">'exclusive'</span>)
+        okay(sequester.mutexes, [ <span class="hljs-number">1</span>, <span class="hljs-number">0</span> ], <span class="hljs-string">&#x27;single exclusive lock, shared mutex with no locks waiting&#x27;</span>)
+        guarded(<span class="hljs-string">&#x27;exclusive&#x27;</span>)
         sequester.unlock()
-        okay(sequester.mutexes, [ <span class="hljs-number">0</span> ], <span class="hljs-string">'single shared mutex with no locks'</span>)
-        okay(log.splice(<span class="hljs-number">0</span>), [ <span class="hljs-string">'exclusive 2'</span> ], <span class="hljs-string">'one exclusive action'</span>)
+        okay(sequester.mutexes, [ <span class="hljs-number">0</span> ], <span class="hljs-string">&#x27;single shared mutex with no locks&#x27;</span>)
+        okay(log.splice(<span class="hljs-number">0</span>), [ <span class="hljs-string">&#x27;exclusive 2&#x27;</span> ], <span class="hljs-string">&#x27;one exclusive action&#x27;</span>)
     }</pre></div></div>
 
         </li>
@@ -635,21 +635,21 @@ proceeding. You <strong>must</strong> pair every lock you obtain with a call to
         locks.push(sequester.share())
         locks.push(sequester.share())
 
-        okay(sequester.mutexes, [ <span class="hljs-number">2</span> ], <span class="hljs-string">'single shared mutex with two locks'</span>)
+        okay(sequester.mutexes, [ <span class="hljs-number">2</span> ], <span class="hljs-string">&#x27;single shared mutex with two locks&#x27;</span>)
 
         <span class="hljs-keyword">await</span> locks.shift()
-        guarded(<span class="hljs-string">'shared'</span>)
+        guarded(<span class="hljs-string">&#x27;shared&#x27;</span>)
         sequester.unlock()
 
-        okay(sequester.mutexes, [ <span class="hljs-number">1</span> ], <span class="hljs-string">'shared mutex with one lock'</span>)
+        okay(sequester.mutexes, [ <span class="hljs-number">1</span> ], <span class="hljs-string">&#x27;shared mutex with one lock&#x27;</span>)
 
         <span class="hljs-keyword">await</span> locks.shift()
-        guarded(<span class="hljs-string">'shared'</span>)
+        guarded(<span class="hljs-string">&#x27;shared&#x27;</span>)
         sequester.unlock()
 
-        okay(sequester.mutexes, [ <span class="hljs-number">0</span> ], <span class="hljs-string">'single shared mutex with no locks'</span>)
+        okay(sequester.mutexes, [ <span class="hljs-number">0</span> ], <span class="hljs-string">&#x27;single shared mutex with no locks&#x27;</span>)
 
-        okay(log.splice(<span class="hljs-number">0</span>), [ <span class="hljs-string">'shared 2'</span>, <span class="hljs-string">'shared 3'</span> ], <span class="hljs-string">'one exclusive action'</span>)
+        okay(log.splice(<span class="hljs-number">0</span>), [ <span class="hljs-string">&#x27;shared 2&#x27;</span>, <span class="hljs-string">&#x27;shared 3&#x27;</span> ], <span class="hljs-string">&#x27;one exclusive action&#x27;</span>)
     }</pre></div></div>
 
         </li>
@@ -688,12 +688,13 @@ two locks in a row we can deadlock.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-41">&#182;</a>
               </div>
-              <pre><code><span class="hljs-comment">// Don't do it!</span>
+              <pre><code><span class="hljs-comment">// Don&#x27;t do it!</span>
 <span class="hljs-keyword">await</span> sequester.share()
 <span class="hljs-keyword">await</span> sequester.share()
 <span class="hljs-comment">// You may never reach this point.</span>
 sequester.unlock()
 sequester.unlock()</code></pre>
+
             </div>
 
         </li>
@@ -740,25 +741,25 @@ lock.</p>
             <div class="content"><div class='highlight'><pre>    {
         <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">reader</span> (<span class="hljs-params"></span>) </span>{
             <span class="hljs-keyword">await</span> sequester.share()
-            guarded(<span class="hljs-string">'shared'</span>)
+            guarded(<span class="hljs-string">&#x27;shared&#x27;</span>)
             sequester.unlock()
         }
 
         <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">writer</span> (<span class="hljs-params"></span>) </span>{
             <span class="hljs-keyword">await</span> sequester.exclude()
-            guarded(<span class="hljs-string">'exclusive'</span>)
+            guarded(<span class="hljs-string">&#x27;exclusive&#x27;</span>)
             sequester.unlock()
         }
 
         <span class="hljs-keyword">const</span> promises = [ reader(), reader(), writer() ]
 
-        okay(sequester.mutexes, [ <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span> ], <span class="hljs-string">'two shared, one exclusive, empty shared tail'</span>)
+        okay(sequester.mutexes, [ <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span> ], <span class="hljs-string">&#x27;two shared, one exclusive, empty shared tail&#x27;</span>)
 
         <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> promise <span class="hljs-keyword">of</span> promises) {
             <span class="hljs-keyword">await</span> promise
         }
 
-        okay(log.splice(<span class="hljs-number">0</span>), [ <span class="hljs-string">'shared 4'</span>, <span class="hljs-string">'shared 5'</span>, <span class="hljs-string">'exclusive 3'</span> ], <span class="hljs-string">'two shared, one exclusive action'</span>)
+        okay(log.splice(<span class="hljs-number">0</span>), [ <span class="hljs-string">&#x27;shared 4&#x27;</span>, <span class="hljs-string">&#x27;shared 5&#x27;</span>, <span class="hljs-string">&#x27;exclusive 3&#x27;</span> ], <span class="hljs-string">&#x27;two shared, one exclusive action&#x27;</span>)
     }</pre></div></div>
 
         </li>
@@ -838,7 +839,7 @@ able to co-ordinate access to guarded blocks of code.</p>
             <span class="hljs-keyword">if</span> (promise != <span class="hljs-literal">null</span>) {
                 <span class="hljs-keyword">await</span> promise
             }
-            guarded(<span class="hljs-string">'shared'</span>)
+            guarded(<span class="hljs-string">&#x27;shared&#x27;</span>)
             sequester.unlock()
         }
 
@@ -847,19 +848,19 @@ able to co-ordinate access to guarded blocks of code.</p>
             <span class="hljs-keyword">if</span> (promise != <span class="hljs-literal">null</span>) {
                 <span class="hljs-keyword">await</span> promise
             }
-            guarded(<span class="hljs-string">'exclusive'</span>)
+            guarded(<span class="hljs-string">&#x27;exclusive&#x27;</span>)
             sequester.unlock()
         }
 
         <span class="hljs-keyword">const</span> promises = [ reader(), reader(), writer() ]
 
-        okay(sequester.mutexes, [ <span class="hljs-number">0</span> ], <span class="hljs-string">'single empty shared mutex'</span>)
+        okay(sequester.mutexes, [ <span class="hljs-number">0</span> ], <span class="hljs-string">&#x27;single empty shared mutex&#x27;</span>)
 
         <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> promise <span class="hljs-keyword">of</span> promises) {
             <span class="hljs-keyword">await</span> promise
         }
 
-        okay(log.splice(<span class="hljs-number">0</span>), [ <span class="hljs-string">'shared 6'</span>, <span class="hljs-string">'shared 7'</span>, <span class="hljs-string">'exclusive 4'</span> ], <span class="hljs-string">'two shared, one exclusive action'</span>)
+        okay(log.splice(<span class="hljs-number">0</span>), [ <span class="hljs-string">&#x27;shared 6&#x27;</span>, <span class="hljs-string">&#x27;shared 7&#x27;</span>, <span class="hljs-string">&#x27;exclusive 4&#x27;</span> ], <span class="hljs-string">&#x27;two shared, one exclusive action&#x27;</span>)
     }</pre></div></div>
 
         </li>
@@ -919,13 +920,13 @@ next few examples are going to use the <code>await</code> directly versions of t
 
             <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">reader</span> (<span class="hljs-params"></span>) </span>{
         <span class="hljs-keyword">await</span> sequester.share()
-        guarded(<span class="hljs-string">'shared'</span>)
+        guarded(<span class="hljs-string">&#x27;shared&#x27;</span>)
         sequester.unlock()
     }
 
     <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">writer</span> (<span class="hljs-params"></span>) </span>{
         <span class="hljs-keyword">await</span> sequester.exclude()
-        guarded(<span class="hljs-string">'exclusive'</span>)
+        guarded(<span class="hljs-string">&#x27;exclusive&#x27;</span>)
         sequester.unlock()
     }</pre></div></div>
 
@@ -969,13 +970,13 @@ next few examples are going to use the <code>await</code> directly versions of t
             <div class="content"><div class='highlight'><pre>    {
         <span class="hljs-keyword">const</span> promises = [ writer(), reader(), reader() ]
 
-        okay(sequester.mutexes, [ <span class="hljs-number">1</span>, <span class="hljs-number">2</span> ], <span class="hljs-string">'single empty shared mutex'</span>)
+        okay(sequester.mutexes, [ <span class="hljs-number">1</span>, <span class="hljs-number">2</span> ], <span class="hljs-string">&#x27;single empty shared mutex&#x27;</span>)
 
         <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> promise <span class="hljs-keyword">of</span> promises) {
             <span class="hljs-keyword">await</span> promise
         }
 
-        okay(log.splice(<span class="hljs-number">0</span>), [ <span class="hljs-string">'exclusive 5'</span>, <span class="hljs-string">'shared 8'</span>, <span class="hljs-string">'shared 9'</span> ], <span class="hljs-string">'two shared, one exclusive action'</span>)
+        okay(log.splice(<span class="hljs-number">0</span>), [ <span class="hljs-string">&#x27;exclusive 5&#x27;</span>, <span class="hljs-string">&#x27;shared 8&#x27;</span>, <span class="hljs-string">&#x27;shared 9&#x27;</span> ], <span class="hljs-string">&#x27;two shared, one exclusive action&#x27;</span>)
     }</pre></div></div>
 
         </li>
@@ -1018,13 +1019,13 @@ next few examples are going to use the <code>await</code> directly versions of t
             <div class="content"><div class='highlight'><pre>    {
         <span class="hljs-keyword">const</span> promises = [ writer(), writer(), reader() ]
 
-        okay(sequester.mutexes, [ <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span> ], <span class="hljs-string">'exclusive, empty shared, exclusive, shared'</span>)
+        okay(sequester.mutexes, [ <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span> ], <span class="hljs-string">&#x27;exclusive, empty shared, exclusive, shared&#x27;</span>)
 
         <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> promise <span class="hljs-keyword">of</span> promises) {
             <span class="hljs-keyword">await</span> promise
         }
 
-        okay(log.splice(<span class="hljs-number">0</span>), [ <span class="hljs-string">'exclusive 6'</span>, <span class="hljs-string">'exclusive 7'</span>, <span class="hljs-string">'shared 10'</span> ], <span class="hljs-string">'two shared, one exclusive action'</span>)
+        okay(log.splice(<span class="hljs-number">0</span>), [ <span class="hljs-string">&#x27;exclusive 6&#x27;</span>, <span class="hljs-string">&#x27;exclusive 7&#x27;</span>, <span class="hljs-string">&#x27;shared 10&#x27;</span> ], <span class="hljs-string">&#x27;two shared, one exclusive action&#x27;</span>)
     }</pre></div></div>
 
         </li>
@@ -1095,7 +1096,7 @@ call to <code>increment()</code> if you call <code>increment()</code>.</p>
         <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">counted</span> (<span class="hljs-params"></span>) </span>{
             <span class="hljs-keyword">await</span> sequester.share()
             sequester.increment(<span class="hljs-number">2</span>)
-            okay(sequester.mutexes, [ <span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span> ], <span class="hljs-string">'countdown shared, exclusive, shared tail'</span>)
+            okay(sequester.mutexes, [ <span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span> ], <span class="hljs-string">&#x27;countdown shared, exclusive, shared tail&#x27;</span>)
             <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> promise <span class="hljs-keyword">of</span> [ parallel(), parallel(), parallel() ]) {
                 <span class="hljs-keyword">await</span> promise
             }
@@ -1103,7 +1104,7 @@ call to <code>increment()</code> if you call <code>increment()</code>.</p>
 
         <span class="hljs-keyword">const</span> promises = [ writer(), counted(), writer() ]
 
-        okay(sequester.mutexes, [ <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span> ], <span class="hljs-string">'exclusive, shared, exclusive shared tail'</span>)
+        okay(sequester.mutexes, [ <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span> ], <span class="hljs-string">&#x27;exclusive, shared, exclusive shared tail&#x27;</span>)
 
         <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> promise <span class="hljs-keyword">of</span> promises) {
             <span class="hljs-keyword">await</span> promise
@@ -1155,7 +1156,7 @@ call to <code>increment()</code> if you call <code>increment()</code>.</p>
         <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">counted</span> (<span class="hljs-params"></span>) </span>{
             <span class="hljs-keyword">await</span> sequester.exclude()
             sequester.increment(<span class="hljs-number">2</span>)
-            okay(sequester.mutexes, [ <span class="hljs-number">3</span>, <span class="hljs-number">1</span> ], <span class="hljs-string">'countdown exclusive, single shared in tail'</span>)
+            okay(sequester.mutexes, [ <span class="hljs-number">3</span>, <span class="hljs-number">1</span> ], <span class="hljs-string">&#x27;countdown exclusive, single shared in tail&#x27;</span>)
             <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> promise <span class="hljs-keyword">of</span> [ parallel(), parallel(), parallel() ]) {
                 <span class="hljs-keyword">await</span> promise
             }
@@ -1163,7 +1164,7 @@ call to <code>increment()</code> if you call <code>increment()</code>.</p>
 
         <span class="hljs-keyword">const</span> promises = [ reader(), counted(), reader() ]
 
-        okay(sequester.mutexes, [ <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span> ], <span class="hljs-string">'exclusive, shared, exclusive shared tail'</span>)
+        okay(sequester.mutexes, [ <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span> ], <span class="hljs-string">&#x27;exclusive, shared, exclusive shared tail&#x27;</span>)
 
         <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> promise <span class="hljs-keyword">of</span> promises) {
             <span class="hljs-keyword">await</span> promise
@@ -1198,15 +1199,15 @@ guarded data.</p>
             <div class="content"><div class='highlight'><pre>    {
         <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">downgraded</span> (<span class="hljs-params"></span>) </span>{
             <span class="hljs-keyword">await</span> sequester.exclude()
-            okay(sequester.mutexes, [ <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span> ], <span class="hljs-string">'exclusive lock held'</span>)
+            okay(sequester.mutexes, [ <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span> ], <span class="hljs-string">&#x27;exclusive lock held&#x27;</span>)
             sequester.downgrade()
-            okay(sequester.mutexes, [ <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span> ], <span class="hljs-string">'exclusive lock downgraded to shared'</span>)
+            okay(sequester.mutexes, [ <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span> ], <span class="hljs-string">&#x27;exclusive lock downgraded to shared&#x27;</span>)
             sequester.unlock()
         }
 
         <span class="hljs-keyword">const</span> promises = [ downgraded(), writer() ]
 
-        okay(sequester.mutexes, [ <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span> ], <span class="hljs-string">'exclusive, empty shared, exclusive, shared tail'</span>)
+        okay(sequester.mutexes, [ <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span> ], <span class="hljs-string">&#x27;exclusive, empty shared, exclusive, shared tail&#x27;</span>)
 
         <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> promise <span class="hljs-keyword">of</span> promises) {
             <span class="hljs-keyword">await</span> promise

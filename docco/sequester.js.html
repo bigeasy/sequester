@@ -181,28 +181,28 @@ up and down. Practically a no-op.</p>
             </div>
 
             <div class="content"><div class='highlight'><pre><span class="hljs-built_in">module</span>.exports = <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Sequester</span> </span>{
-    <span class="hljs-keyword">constructor</span> () {
-        <span class="hljs-keyword">this</span>._queue = [{ <span class="hljs-attr">exclusive</span>: <span class="hljs-literal">false</span>, <span class="hljs-attr">count</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">promise</span>: <span class="hljs-literal">null</span>, <span class="hljs-attr">resolve</span>: <span class="hljs-literal">null</span> }]
+    <span class="hljs-title">constructor</span> (<span class="hljs-params"></span>) {
+        <span class="hljs-built_in">this</span>._queue = [{ <span class="hljs-attr">exclusive</span>: <span class="hljs-literal">false</span>, <span class="hljs-attr">count</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">promise</span>: <span class="hljs-literal">null</span>, <span class="hljs-attr">resolve</span>: <span class="hljs-literal">null</span> }]
     }
 
-    <span class="hljs-keyword">get</span> mutexes () {
-        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._queue.map(<span class="hljs-function"><span class="hljs-params">mutex</span> =&gt;</span> mutex.count)
+    get mutexes () {
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>._queue.map(<span class="hljs-function"><span class="hljs-params">mutex</span> =&gt;</span> mutex.count)
     }
 
-    <span class="hljs-keyword">get</span> state () {
-        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._queue[<span class="hljs-number">0</span>].exclusive ? <span class="hljs-string">'exclusive'</span> : <span class="hljs-string">'shared'</span>
+    get state () {
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>._queue[<span class="hljs-number">0</span>].exclusive ? <span class="hljs-string">&#x27;exclusive&#x27;</span> : <span class="hljs-string">&#x27;shared&#x27;</span>
     }
 
     increment (count) {
-        <span class="hljs-keyword">this</span>._queue[<span class="hljs-number">0</span>].count += count
+        <span class="hljs-built_in">this</span>._queue[<span class="hljs-number">0</span>].count += count
     }
 
     share () {
-        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>._queue.length == <span class="hljs-number">1</span>) {
-            <span class="hljs-keyword">this</span>._queue[<span class="hljs-number">0</span>].count++
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span>._queue.length == <span class="hljs-number">1</span>) {
+            <span class="hljs-built_in">this</span>._queue[<span class="hljs-number">0</span>].count++
             <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>
         }
-        <span class="hljs-keyword">const</span> shared = <span class="hljs-keyword">this</span>._queue[<span class="hljs-keyword">this</span>._queue.length - <span class="hljs-number">1</span>]
+        <span class="hljs-keyword">const</span> shared = <span class="hljs-built_in">this</span>._queue[<span class="hljs-built_in">this</span>._queue.length - <span class="hljs-number">1</span>]
         shared.count++
         <span class="hljs-keyword">return</span> shared.promise
     }
@@ -211,9 +211,9 @@ up and down. Practically a no-op.</p>
         <span class="hljs-keyword">const</span> exclusive = {
             <span class="hljs-attr">exclusive</span>: <span class="hljs-literal">true</span>,
             <span class="hljs-attr">count</span>: <span class="hljs-number">1</span>,
-            <span class="hljs-attr">promise</span>: <span class="hljs-keyword">this</span>._queue.length == <span class="hljs-number">1</span> &amp;&amp; <span class="hljs-keyword">this</span>._queue[<span class="hljs-number">0</span>].count == <span class="hljs-number">0</span>
+            <span class="hljs-attr">promise</span>: <span class="hljs-built_in">this</span>._queue.length == <span class="hljs-number">1</span> &amp;&amp; <span class="hljs-built_in">this</span>._queue[<span class="hljs-number">0</span>].count == <span class="hljs-number">0</span>
                 ? <span class="hljs-literal">null</span>
-                : <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-params">resolve</span> =&gt;</span> <span class="hljs-keyword">this</span>._queue[<span class="hljs-keyword">this</span>._queue.length - <span class="hljs-number">1</span>].resolve = resolve),
+                : <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-params">resolve</span> =&gt;</span> <span class="hljs-built_in">this</span>._queue[<span class="hljs-built_in">this</span>._queue.length - <span class="hljs-number">1</span>].resolve = resolve),
             <span class="hljs-attr">resolve</span>: <span class="hljs-literal">null</span>
         }
         <span class="hljs-keyword">const</span> shared = {
@@ -223,22 +223,22 @@ up and down. Practically a no-op.</p>
             <span class="hljs-attr">promise</span>: <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-params">resolve</span> =&gt;</span> exclusive.resolve = resolve),
             <span class="hljs-attr">resolve</span>: <span class="hljs-literal">null</span>
         }
-        <span class="hljs-keyword">this</span>._queue.push(exclusive, shared)
+        <span class="hljs-built_in">this</span>._queue.push(exclusive, shared)
         <span class="hljs-keyword">if</span> (exclusive.promise == <span class="hljs-literal">null</span>) {
-            <span class="hljs-keyword">this</span>._queue.shift()
+            <span class="hljs-built_in">this</span>._queue.shift()
         }
         <span class="hljs-keyword">return</span> exclusive.promise
     }
 
     downgrade () {
-        <span class="hljs-keyword">this</span>._queue[<span class="hljs-number">1</span>].count++
-        <span class="hljs-keyword">this</span>.unlock()
+        <span class="hljs-built_in">this</span>._queue[<span class="hljs-number">1</span>].count++
+        <span class="hljs-built_in">this</span>.unlock()
     }
 
     unlock () {
-        <span class="hljs-keyword">this</span>._queue[<span class="hljs-number">0</span>].count--
-        <span class="hljs-keyword">while</span> (<span class="hljs-keyword">this</span>._queue.length != <span class="hljs-number">1</span> &amp;&amp; <span class="hljs-keyword">this</span>._queue[<span class="hljs-number">0</span>].count == <span class="hljs-number">0</span>) {
-            <span class="hljs-keyword">this</span>._queue.shift().resolve.call()
+        <span class="hljs-built_in">this</span>._queue[<span class="hljs-number">0</span>].count--
+        <span class="hljs-keyword">while</span> (<span class="hljs-built_in">this</span>._queue.length != <span class="hljs-number">1</span> &amp;&amp; <span class="hljs-built_in">this</span>._queue[<span class="hljs-number">0</span>].count == <span class="hljs-number">0</span>) {
+            <span class="hljs-built_in">this</span>._queue.shift().resolve.call()
         }
     }
 }</pre></div></div>
